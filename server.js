@@ -1,32 +1,25 @@
-const express = require('express')
-const app = express()
-const socketio = require('socket.io')
-
+const express = require('express');
+const socketio = require('socket.io');
 const http = require('http')
 
-const server = http.Server(app)
-const io = socketio(server)
+const app = express(); // creates express app
+const server = http.Server(app) //creates http server using the app
+const io = socketio(server) //adds a socket on above server
 
+app.use('/', express.static(__dirname + '/public_static'))
 
+io.on('connection', (socket) => {
 
-
-app.use('/' , express.static(__dirname + '/public_static'))
-
-io.on('connection' , (socket) => {
     console.log('socket connected ' + socket.id)
 
-    // socket.on('SEND' , (data) => {
-        // console.log(`ping from ${socket.id} ${JSON.stringify(data)}`)
-        socket.on('SEND', (data) => {
+    socket.on('SEND', (data) => {
 
-            socket.broadcast.emit('RECV', data)
-            // io.emit('RECV', data)
+        io.emit('RECV', data)
 
-        })
-    // })
+    })
 
 })
-//listen to server not app
-server.listen(5454 , () => {
-    console.log('server started at: http://localhost:5454')
-})
+
+server.listen(5656, function () {
+    console.log("Server started on http://localhost:5656");
+});

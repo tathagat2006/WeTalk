@@ -1,22 +1,15 @@
 const socket = io()
-setTimeout(() => {
-    console.log(socket.id)
-},2000)
+setTimeout(() => console.log(socket.id), 2000)
 
-window.onload = function() {
-    // const pingBtn = document.getElementById('ping')
-    // pingBtn.onclick = function() {
-    //     socket.emit('abcd' ,{a:10 , b:20})
-    // }
-
-    const message = document.getElementById('message')
+window.onload = function () {
+    const msgBox = document.getElementById('message')
     const userBox = document.getElementById('user')
     const sendBtn = document.getElementById('send')
     const chatList = document.getElementById('chat')
 
     sendBtn.onclick = function () {
         socket.emit('SEND', {
-            msg: message.value,
+            msg: msgBox.value,
             sender: userBox.value
         })
     }
